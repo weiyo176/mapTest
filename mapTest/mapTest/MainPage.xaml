@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             x:Class="mapTest.MainPage">
+
+    <StackLayout>
+        <maps:Map x:Name="map" IsShowingUser="True" >
+            <x:Arguments>
+                <maps:MapSpan>
+                    <x:Arguments>
+                        <maps:Position>
+                            <x:Arguments>
+                                <x:Double>24.13333</x:Double>
+                                <x:Double>120.68333</x:Double>
+                            </x:Arguments>
+                        </maps:Position>
+                        <x:Double>0.01</x:Double>
+                        <x:Double>0.01</x:Double>
+                    </x:Arguments>
+                </maps:MapSpan>
+            </x:Arguments>
+        </maps:Map>
+        <Button Clicked="reset" Text="reset"></Button>
+        <!--<Button Clicked="send" Text="send MQTT"></Button>-->
+        <Label Text="MQTT" x:Name="mqttsend" FontSize="30"></Label>
+        <Label Text="MQTT" x:Name="mqtt1" FontSize="30"></Label>
+    </StackLayout>
+
+</ContentPage>
