@@ -11,12 +11,15 @@ using Xamarin.Forms.Maps;
 using M2Mqtt;
 using M2Mqtt.Messages;
 using static Android.Icu.Text.Transliterator;
+using Android.Util;
 
 namespace mapTest
 {
     public partial class MainPage : ContentPage
     {
         private Polyline polyline;
+        private Polyline user1;
+        private List<Xamarin.Forms.Maps.Position> positions;
         private Xamarin.Forms.Maps.Position lastPosition;
         int i = 0;
         MqttClient MClient;
@@ -37,6 +40,13 @@ namespace mapTest
             //    _ = MClient.Subscribe(topics, msgs);
             //    MClient.MqttMsgPublishReceived += MClient_MqttMsgPublishReceived;
             //}
+            user1 = new Polyline
+            {
+                StrokeColor = Color.Blue,
+                StrokeWidth = 12
+            };
+            map.MapElements.Add(user1);
+
             lastPosition = new Xamarin.Forms.Maps.Position(24.13333, 120.68333); // 初始位置
             AddPin();
             StartLocationUpdate();
@@ -81,6 +91,7 @@ namespace mapTest
                 {
                     mqtt1.Text = str;
                     AddPin(position);
+                    AddLine(position);
                 });
             }
             catch (Exception ex)
@@ -95,6 +106,25 @@ namespace mapTest
 
             // handle message received 
         }
+
+        private void AddLine(Xamarin.Forms.Maps.Position position)
+        {
+            if (positions.Count == 0)
+            {
+                positions.Add(position);
+                user1.Geopath.Add(position);
+            }
+            else
+            {
+                if (positions[positions.Count-1] !=position)
+                {
+                positions.Add(position);
+                user1.Geopath.Add(position);
+                }
+            }
+            
+        }
+
         //static void MClient_MqttMsgPublishReceived(object sender,MqttMsgConnectEventArgs e)
         //{
         //    string topic = e.Topic;
@@ -110,7 +140,7 @@ namespace mapTest
             //clear map
             map.Pins.Clear();
             //camera focus on user
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(0.5)));
+            //map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(0.5)));
             //Add pin in map and pin ID
             Pin pin = new Pin
             {
